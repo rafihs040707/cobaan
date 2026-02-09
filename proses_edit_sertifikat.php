@@ -1,34 +1,47 @@
 <?php
-
 include("config.php");
 
-// cek apakah tombol submit sudah diklik atau blum?
-if(isset($_POST['submit'])){
+if (isset($_POST['submit'])) {
 
-    // ambil data dari formulir
-    $id = $_POST['id'];
-    $nama = $_POST['nama'];
-    $pelatihan = $_POST['pelatihan'];
+    $id           = $_POST['id'];
+    $nama         = $_POST['nama'];
+    $pelatihan    = $_POST['pelatihan'];
     $periode_awal = $_POST['periode_awal'];
     $periode_akhir = $_POST['periode_akhir'];
-    $issued_date = $_POST['issued_date'];
+    $issued_date  = $_POST['issued_date'];
+    $status       = $_POST['status'];
+    $template_id  = $_POST['template_id'];
 
-    // buat query update
-    $sql = "UPDATE sertifikat SET nama = '$nama', pelatihan = '$pelatihan', periode_awal = '$periode_awal', 'periode_akhir' = '$periode_akhir', 'issued_date' = '$issued_date' WHERE id=$id";
-    $query = mysqli_query($conn, $sql);
+    $stmt = $conn->prepare("
+        UPDATE sertifikat 
+        SET nama = ?, 
+            pelatihan = ?, 
+            periode_awal = ?, 
+            periode_akhir = ?, 
+            issued_date = ?, 
+            status = ?, 
+            template_id = ?
+        WHERE id = ?
+    ");
 
-    // apakah query update berhasil?
-    if( $query ) {
-        // kalau berhasil alihkan ke halaman data_sertifikat.php
-        header('Location: data_sertifikat.php');
+    $stmt->bind_param(
+        "sssssiii",
+        $nama,
+        $pelatihan,
+        $periode_awal,
+        $periode_akhir,
+        $issued_date,
+        $status,
+        $template_id,
+        $id
+    );
+
+    if ($stmt->execute()) {
+        header("Location: data_sertifikat.php");
+        exit;
     } else {
-        // kalau gagal tampilkan pesan
-        die("Gagal menyimpan perubahan...");
+        echo "Gagal update data: " . $stmt->error;
     }
-
-
 } else {
     die("Akses dilarang...");
 }
-
-?>

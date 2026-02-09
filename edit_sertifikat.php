@@ -65,7 +65,7 @@ $sertifikat = mysqli_fetch_assoc($data_sertifikat);
     </div>
 
     <div class="d-grid gap-2 d-flex justify-content-center mt-3 pb-5">
-        <button type="submit" class="btn btn-primary ms-2 col-3">Update</button>
+        <button type="submit" name="submit" class="btn btn-primary ms-2 col-3">Update</button>
         <a href="./data_sertifikat.php" style="background-color: #6C7301;" class="btn text-decoration-none text-white">
             Kembali Ke Halaman Sertifikat
         </a>
