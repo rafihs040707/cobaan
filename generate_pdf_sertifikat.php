@@ -127,7 +127,7 @@ body {
 .nama {
     position: absolute;
     top: 300px;
-    left: 0;
+    left: 53px;
     width: 100%;
     text-align: center;
     font-size: 45px;
@@ -139,7 +139,7 @@ body {
 .pelatihan {
     position: absolute;
     top: 445px;
-    left: 0;
+    left: 60px;
     width: 100%;
     text-align: center;
     font-size: 26px;
