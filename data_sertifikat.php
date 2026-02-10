@@ -105,9 +105,31 @@ include 'config.php';
                 ?>
             </tbody>
         </table>
+        <nav>
+            <ul class="pagination justify-content-end">
+                <li class="page-item">
+                    <a class="page-link" <?php if ($halaman > 1) {
+                                                echo "href='?halaman=$previous'";
+                                            } ?>>Previous</a>
+                </li>
+                <?php
+                for ($x = 1; $x <= $total_halaman; $x++) {
+                ?>
+                    <li class="page-item"><a class="page-link" href="?halaman=<?php echo $x ?>"><?php echo $x; ?></a></li>
+                <?php
+                }
+                ?>
+                <li class="page-item">
+                    <a class="page-link" <?php if ($halaman < $total_halaman) {
+                                                echo "href='?halaman=$next'";
+                                            } ?>>Next</a>
+                </li>
+            </ul>
+        </nav>
     </div>
+</div>
 
-
+<div class="container-fluid d-block d-md-none">
     <?php
     $batas = 5;
     $halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
@@ -128,7 +150,7 @@ include 'config.php';
             $periode = date('F d', $awal) . " - " . date('F d, Y', $akhir);
         }
 
-        $terbit = date('d-m-Y', strtotime($sertifikat['issued_date']));
+        $terbit = date('F-d-Y', strtotime($sertifikat['issued_date']));
     ?>
         <div class="d-block d-md-none">
             <div class="card mb-2 border-primary shadow-sm">
@@ -172,13 +194,13 @@ include 'config.php';
                         <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1" class="btn btn-sm btn-info text-white w-100" target="_blank">Preview</a>
                         <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-primary text-white w-100">Generate</a>
                         <?php
-                            $filePdf = "uploads/sertifikat/" . $sertifikat['file_sertifikat'];
-                            if (!empty($sertifikat['file_sertifikat']) && file_exists($filePdf)) {
-                                $link = "download.php?id=" . $sertifikat['id'];
-                            } else {
-                                $link = "generate_sertifikat.php?id=" . $sertifikat['id'];
-                            }
-                            ?>
+                        $filePdf = "uploads/sertifikat/" . $sertifikat['file_sertifikat'];
+                        if (!empty($sertifikat['file_sertifikat']) && file_exists($filePdf)) {
+                            $link = "download.php?id=" . $sertifikat['id'];
+                        } else {
+                            $link = "generate_sertifikat.php?id=" . $sertifikat['id'];
+                        }
+                        ?>
                         <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white w-100">Download PDF</a>
                     </div>
 
@@ -186,7 +208,27 @@ include 'config.php';
             </div>
         </div>
     <?php } ?>
-
+    <nav>
+        <ul class="pagination justify-content-end">
+            <li class="page-item">
+                <a class="page-link" <?php if ($halaman > 1) {
+                                            echo "href='?halaman=$previous'";
+                                        } ?>>Previous</a>
+            </li>
+            <?php
+            for ($x = 1; $x <= $total_halaman; $x++) {
+            ?>
+                <li class="page-item"><a class="page-link" href="?halaman=<?php echo $x ?>"><?php echo $x; ?></a></li>
+            <?php
+            }
+            ?>
+            <li class="page-item">
+                <a class="page-link" <?php if ($halaman < $total_halaman) {
+                                            echo "href='?halaman=$next'";
+                                        } ?>>Next</a>
+            </li>
+        </ul>
+    </nav>
 </div>
 
 

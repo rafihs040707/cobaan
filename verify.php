@@ -27,7 +27,7 @@ if ($uuid) {
 
     // Ambil data hanya jika status = 1 (VALID)
     $query = mysqli_query($conn, "
-        SELECT s.*, t.nama_template
+        SELECT s.*, t.nama_template, t.penyelenggara
         FROM sertifikat s
         JOIN template t ON s.template_id = t.id
         WHERE s.nomor_sertifikat LIKE '%-$uuid_safe'

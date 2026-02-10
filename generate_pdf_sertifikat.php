@@ -54,11 +54,21 @@ if (empty($data['nomor_sertifikat'])) {
 // ======================
 // FORMAT TANGGAL
 // ======================
-$awal  = date('F d', strtotime($data['periode_awal']));
-$akhir = date('d, Y', strtotime($data['periode_akhir']));
-$periode = $awal . " - " . $akhir;
+$awal  = strtotime($data['periode_awal']);
+$akhir = strtotime($data['periode_akhir']);
+
+if (date('F Y', $awal) == date('F Y', $akhir)) {
+    $periode = date('F d', $awal) . " - " . date('d, Y', $akhir);
+} else {
+    $periode = date('F d', $awal) . " - " . date('F d, Y', $akhir);
+}
 
 $issued = date('F d, Y', strtotime($data['issued_date']));
+
+// jika ada penyelenggara di tabel sertifikat
+    if (!empty($data['penyelenggara'])) {
+        $penyelenggara = $data['penyelenggara'];
+    }
 
 // ======================
 // QR TEXT (LINK VERIFIKASI)
