@@ -2,7 +2,7 @@
 session_start();
 
 // batas waktu 5 menit
-$timeout = 300; // 5 menit
+$timeout = 900; // 300 untuk 5 menit
 
 // jika belum login
 if (!isset($_SESSION['role'])) {
