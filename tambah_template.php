@@ -19,11 +19,6 @@
         <input type="file" name="tampak_depan" class="form-control" required accept="image/*"><br>
     </div>
 
-    <div class="mb-2">
-        <label for="tampak_belakang" class="form-label ms-3">Tampak Belakang: </label>
-        <input type="file" name="tampak_belakang" class="form-control" accept="image/*"><br>
-    </div>
-
     <div class="d-grid gap-2 d-flex justify-content-center mt-3">
         <button type="submit" name="submit" class="btn btn-primary ms-2 col-3">Submit</button>
         <button type="reset" class="btn btn-warning ms-2 col-3">Reset Form</button>

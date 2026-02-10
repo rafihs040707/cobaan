@@ -67,7 +67,6 @@ $nomor = $halaman_awal + 1;
                         <th>No</th>
                         <th>Nama Template</th>
                         <th>Tampak Depan</th>
-                        <th>Tampak Belakang</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -79,9 +78,6 @@ $nomor = $halaman_awal + 1;
                                 <td><?= $template['nama']; ?></td>
                                 <td>
                                     <img src="uploads/template/<?= $template['tampak_depan']; ?>" width="80">
-                                </td>
-                                <td>
-                                    <img src="uploads/template/<?= $template['tampak_belakang']; ?>" width="80">
                                 </td>
                                 <td>
                                     <a class="btn btn-sm btn-info text-white" href="edit_template.php?id=<?= $template['id']; ?>">Edit</a>

@@ -12,7 +12,6 @@ $template = mysqli_fetch_assoc($data_template);
 <form action="proses_edit_template.php" method="POST" class="mx-4" enctype="multipart/form-data">
     <input type="hidden" name="id" value="<?= $template['id']; ?>">
     <input type="hidden" name="tampak_depan_lama" value="<?= $template['tampak_depan']; ?>">
-    <input type="hidden" name="tampak_belakang_lama" value="<?= $template['tampak_belakang']; ?>">
 
     <div class="mb-2">
         <label class="form-label ms-3">Nama Template:</label>
@@ -24,13 +23,6 @@ $template = mysqli_fetch_assoc($data_template);
         <img src="uploads/template/<?= $template['tampak_depan']; ?>" width="100px" class="ms-5"><br>
         <label class="form-label ms-3">Tampak Depan:</label>
         <input type="file" name="tampak_depan" class="form-control" accept="image/*">
-    </div>
-
-    <div class="mb-2">
-        <p class="ms-2">Gambar tampak belakang lama:</p>
-        <img src="uploads/template/<?= $template['tampak_belakang']; ?>" width="100px" class="ms-5"><br>
-        <label class="form-label ms-3">Tampak Belakang:</label>
-        <input type="file" name="tampak_belakang" class="form-control" accept="image/*">
     </div>
 
     <div class="d-flex justify-content-center mt-3">

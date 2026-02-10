@@ -34,10 +34,9 @@ if (isset($_POST['submit'])) {
     }
 
     $tampak_depan = uploadFile('tampak_depan', $targetDir);
-    $tampak_belakang = uploadFile('tampak_belakang', $targetDir);
 
-    $stmt = $conn->prepare("INSERT INTO template (nama_template, tampak_depan, tampak_belakang) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $nama_template, $tampak_depan, $tampak_belakang);
+    $stmt = $conn->prepare("INSERT INTO template (nama_template, tampak_depan) VALUES (?, ?)");
+    $stmt->bind_param("sss", $nama_template, $tampak_depan);
     $query = $stmt->execute();
 
     if ($query) {
