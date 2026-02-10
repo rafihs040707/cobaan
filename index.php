@@ -1,14 +1,14 @@
 <?php
 session_start();
 
-// kalau SUDAH login, langsung ke dashboard
-if (isset($_SESSION['role' == 'admin'])) {
-    header("Location:dashboard_admin.php");
-    exit;
-}
-if (isset($_SESSION['role' == 'lo'])) {
-    header("Location:dashboard_lo.php");
-    exit;
+if (isset($_SESSION['role'])) {
+    if ($_SESSION['role'] == "admin") {
+        header("Location: dashboard_admin.php");
+        exit;
+    } elseif ($_SESSION['role'] == "lo") {
+        header("Location: dashboard_lo.php");
+        exit;
+    }
 }
 
 // ALERT LOGIN SALAH

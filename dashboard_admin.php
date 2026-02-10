@@ -1,6 +1,13 @@
 <?php 
 include 'header_admin.php'; 
 include 'config.php';
+include "cek_login.php";
+
+if ($_SESSION['role'] != "admin") {
+    header("Location: index.php");
+    exit;
+}
+
 ?>
 
 <head>
