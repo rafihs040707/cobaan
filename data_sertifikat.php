@@ -1,11 +1,57 @@
 <?php
 include 'header_admin.php';
 include 'config.php';
+session_start()
 ?>
 
 <head>
     <title>Data Sertifikat</title>
 </head>
+
+<?php if (isset($_SESSION['success'])) { ?>
+    <div id="successAlert" class="alert alert-success fade show text-center" role="alert">
+        <?= $_SESSION['success']; ?>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            let alertBox = document.getElementById("successAlert");
+            if (alertBox) {
+                alertBox.classList.remove("show"); // fade out
+            }
+        }, 3000);
+
+        setTimeout(() => {
+            let alertBox = document.getElementById("successAlert");
+            if (alertBox) {
+                alertBox.remove(); // hapus element setelah fade selesai
+            }
+        }, 4000);
+    </script>
+<?php unset($_SESSION['success']); } ?>
+
+<?php if (isset($_SESSION['error'])) { ?>
+    <div id="errorAlert" class="alert alert-danger fade show text-center" role="alert">
+        <?= $_SESSION['error']; ?>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            let alertBox = document.getElementById("errorAlert");
+            if (alertBox) {
+                alertBox.classList.remove("show");
+            }
+        }, 3000);
+
+        setTimeout(() => {
+            let alertBox = document.getElementById("errorAlert");
+            if (alertBox) {
+                alertBox.remove();
+            }
+        }, 4000);
+    </script>
+<?php unset($_SESSION['error']); } ?>
+
 
 <div class="container">
     <h2 class="my-2 ms-3">Data Sertifikat</h2>

@@ -36,11 +36,16 @@ if (isset($_POST['submit'])) {
         $id
     );
 
+    session_start();
+
     if ($stmt->execute()) {
+        $_SESSION['success'] = "Data berhasil diperbarui!";
         header("Location: data_sertifikat_lo.php");
         exit;
     } else {
-        echo "Gagal update data: " . $stmt->error;
+        $_SESSION['error'] = "Data gagal diperbarui. Silakan coba lagi!";
+        header("Location: data_sertifikat_lo.php");
+        exit;
     }
 } else {
     die("Akses dilarang...");

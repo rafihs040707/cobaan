@@ -20,12 +20,19 @@ if (isset($_POST['submit'])) {
 
     $stmt->bind_param("ssssssi", $nama, $kegiatan, $periode_awal, $periode_akhir, $issued_date, $status, $template_id);
 
+    session_start();
+
     if ($stmt->execute()) {
         $last_id = $conn->insert_id;
+
+        $_SESSION['success'] = "Data sertifikat berhasil ditambahkan dan tersimpan!";
 
         header("Location: data_sertifikat.php?id=$last_id");
         exit;
     } else {
-        echo "Gagal menyimpan data: " . $stmt->error;
+        $_SESSION['error'] = "Terjadi kesalahan saat menyimpan data. Silakan ulangi kembali!";
+
+        header("Location: data_sertifikat.php");
+        exit;
     }
 }

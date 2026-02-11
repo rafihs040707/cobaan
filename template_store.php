@@ -38,12 +38,17 @@ if (isset($_POST['submit'])) {
 
     $stmt = $conn->prepare("INSERT INTO template (nama_template, penyelenggara, tampak_depan) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $nama_template, $penyelenggara, $tampak_depan);
-    $query = $stmt->execute();
+    
+    session_start();
 
-    if ($query) {
-        header('Location: data_template.php?status=sukses');
+    if ($stmt->execute()) {
+        $_SESSION['success'] = "Data template berhasil ditambahkan dan tersimpan!";
+        header("Location: data_template.php");
+        exit;
     } else {
-        header('Location: data_template.php?status=gagal');
+        $_SESSION['error'] = "Terjadi kesalahan saat menyimpan data. Silakan ulangi kembali!";
+        header("Location: data_template.php");
+        exit;
     }
 } else {
     die("Akses dilarang...");

@@ -32,9 +32,15 @@ if (isset($_POST['update'])) {
                 tampak_depan='$tampak_depan'
                 WHERE id='$id'";
 
+    session_start();
+
     if (mysqli_query($conn, $query)) {
-        header("Location: data_template.php?status=success");
+        $_SESSION['success'] = "Data template berhasil diperbarui.";
+        header("Location: data_template.php");
+        exit;
     } else {
-        echo "Gagal update data: " . mysqli_error($conn);
+        $_SESSION['error'] = "Data template gagal diperbarui. Silakan coba lagi.";
+        header("Location: data_template.php");
+        exit;
     }
 }
