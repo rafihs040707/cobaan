@@ -140,7 +140,7 @@ $nomor = $halaman_awal + 1;
 
                                 <td><?= $sertifikat['nama_template']; ?></td>
 
-                                <td>
+                                <td class="text-nowrap">
                                     <a href="edit_sertifikat_lo.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-white mt-1">Edit</a>
 
                                     <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1"

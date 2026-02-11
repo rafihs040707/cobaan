@@ -140,18 +140,12 @@ $nomor = $halaman_awal + 1;
 
                                 <td><?= $sertifikat['nama_template']; ?></td>
 
-                                <td>
+                                <td class="text-nowrap">
                                     <a href="edit_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-warning text-black mt-1">Edit</a>
-
-                                    <a href="hapus_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white mt-1"
-                                        onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
-
                                     <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>&preview=1"
                                         class="btn btn-sm btn-info text-black mt-1" target="_blank">Preview</a>
-
                                     <a href="generate_pdf_sertifikat.php?id=<?= $sertifikat['id']; ?>"
                                         class="btn btn-sm btn-primary text-white mt-1">Generate</a>
-
                                     <?php
                                     $filePdf = "uploads/sertifikat/" . $sertifikat['file_sertifikat'];
                                     if (!empty($sertifikat['file_sertifikat']) && file_exists($filePdf)) {
@@ -160,8 +154,9 @@ $nomor = $halaman_awal + 1;
                                         $link = "generate_pdf_sertifikat.php?id=" . $sertifikat['id'];
                                     }
                                     ?>
-
                                     <a href="<?= $link; ?>" class="btn btn-sm btn-success text-white mt-1">Download PDF</a>
+                                    <a href="hapus_sertifikat.php?id=<?= $sertifikat['id']; ?>" class="btn btn-sm btn-danger text-white mt-1"
+                                        onclick="return confirm('Apakah yakin data sertifikat ini akan dihapus?');">Hapus</a>
                                 </td>
                             </tr>
                         <?php } ?>
