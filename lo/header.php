@@ -11,7 +11,6 @@ require_once BASE_PATH . '/auth/cek_login.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?= BASE_URL ?>vendor/bs.min.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>vendor/bs-icon.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>vendor/style.css">
     <link rel="icon" type="image/png" href="<?= BASE_URL ?>image/logo.png">
 </head>

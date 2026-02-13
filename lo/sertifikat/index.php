@@ -128,9 +128,13 @@ require_once BASE_PATH . '/lo/header.php';
                         <td>
                             <?php if (empty($sertifikat['nomor_sertifikat'])) { ?>
                                 <span class="badge bg-warning">Belum Generate</span>
-                            <?php } else { ?>
-                                <?= $sertifikat['nomor_sertifikat']; ?>
+                            <?php } else {
+                                $nomor2 = $sertifikat['nomor_sertifikat'];
+                                $nomor_tampil = explode('-', $nomor2)[0];
+                            ?>
+                                <?= htmlspecialchars($nomor_tampil); ?>
                             <?php } ?>
+
                         </td>
                         <td><?php echo $sertifikat['nama_template']; ?></td>
                         <td class="text-nowrap">
@@ -227,9 +231,13 @@ require_once BASE_PATH . '/lo/header.php';
                         <div><strong>No Sertifikat:</strong>
                             <?php if (empty($sertifikat['nomor_sertifikat'])) { ?>
                                 <span class="badge bg-warning">Belum Generate</span>
-                            <?php } else { ?>
-                                <?= $sertifikat['nomor_sertifikat']; ?>
+                            <?php } else {
+                                $nomor2 = $sertifikat['nomor_sertifikat'];
+                                $nomor_tampil = explode('-', $nomor2)[0];
+                            ?>
+                                <?= htmlspecialchars($nomor_tampil); ?>
                             <?php } ?>
+
                         </div>
                         <div><strong>Template Yang Digunakan:</strong> <?= $sertifikat['nama_template']; ?></div>
                     </div>
