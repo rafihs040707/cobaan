@@ -271,12 +271,23 @@ ob_end_clean();
 
 $preview = isset($_GET['preview']);
 
+// pastikan file sudah tersimpan
+if (!file_exists($pdfPath)) {
+    die("File PDF tidak ditemukan.");
+}
+
+// URL file PDF yang sudah dibuat
+$fileUrl = BASE_URL . "uploads/sertifikat/" . $filename;
+
 if ($preview) {
-    $dompdf->stream($filename, ["Attachment" => false]);
+    header("Location: " . $fileUrl);
     exit;
 }
 
-$dompdf->stream($filename, ["Attachment" => true]);
+// kalau mau force download
+header("Content-Type: application/pdf");
+header("Content-Disposition: attachment; filename=\"" . $filename . "\"");
+readfile($pdfPath);
 exit;
 
 
