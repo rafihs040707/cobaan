@@ -22,8 +22,15 @@ require_once BASE_PATH . '/lo/header.php';
 
     <div class="mb-4">
         <label for="pelatihan" class="form-label ms-3">Pelatihan: </label>
-        <input type="text" name="pelatihan" placeholder="Example: Cyber Security" class="form-control"
-            maxlength="64" required>
+        <select class="form-select form-select-sm" name="pelatihan" required>
+            <option disabled selected>Pilih Pelatihan</option>
+            <?php
+            $q = mysqli_query($conn, "SELECT * FROM pelatihan");
+            while ($p = mysqli_fetch_assoc($q)) {
+                echo "<option value='" . $p['id'] . "'>" . $p['nama_pelatihan'] . "</option>";
+            }
+            ?>
+        </select>
     </div>
 
     <div class="mb-4">

@@ -16,19 +16,20 @@ if (isset($_POST['submit'])) {
     $template_id  = $_POST['template_id'];
 
     $stmt = $conn->prepare("
-        UPDATE sertifikat 
-        SET nama = ?, 
-            pelatihan = ?, 
-            periode_awal = ?, 
-            periode_akhir = ?, 
-            issued_date = ?, 
-            status = ?, 
-            template_id = ?
-        WHERE id = ?
-    ");
+    UPDATE sertifikat 
+    SET nama = ?, 
+        pelatihan_id = ?, 
+        periode_awal = ?, 
+        periode_akhir = ?, 
+        issued_date = ?, 
+        status = ?, 
+        template_id = ?
+    WHERE id = ?
+");
+
 
     $stmt->bind_param(
-        "sssssiii",
+        "sisssiii",
         $nama,
         $pelatihan,
         $periode_awal,

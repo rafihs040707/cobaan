@@ -30,7 +30,8 @@ require_once BASE_PATH . '/lo/header.php';
             }
         }, 6000);
     </script>
-<?php unset($_SESSION['success']); } ?>
+<?php unset($_SESSION['success']);
+} ?>
 
 <?php if (isset($_SESSION['error'])) { ?>
     <div id="errorAlert" class="alert alert-danger fade show d-flex position-absolute w-100" role="alert">
@@ -52,7 +53,8 @@ require_once BASE_PATH . '/lo/header.php';
             }
         }, 6000);
     </script>
-<?php unset($_SESSION['error']); } ?>
+<?php unset($_SESSION['error']);
+} ?>
 
 <div class="container">
     <h2 class="my-2 ms-3">Data Sertifikat</h2>
@@ -96,7 +98,7 @@ require_once BASE_PATH . '/lo/header.php';
                 $jumlah_data = mysqli_num_rows($data);
                 $total_halaman = ceil($jumlah_data / $batas);
 
-                $data_sertifikat = mysqli_query($conn, "SELECT s.*, t.nama_template FROM sertifikat s JOIN template t ON s.template_id = t.id LIMIT $batas OFFSET $halaman_awal");
+                $data_sertifikat = mysqli_query($conn, "SELECT s.*, t.nama_template, p.nama_pelatihan FROM sertifikat s JOIN template t ON s.template_id = t.id LEFT JOIN pelatihan p ON s.pelatihan_id = p.id LIMIT $batas OFFSET $halaman_awal");
                 $nomor = $halaman_awal + 1;
                 while ($sertifikat = mysqli_fetch_array($data_sertifikat)) {
                     $awal  = strtotime($sertifikat['periode_awal']);
@@ -113,7 +115,7 @@ require_once BASE_PATH . '/lo/header.php';
                     <tr>
                         <th><?php echo $nomor++; ?>.</th>
                         <td><?php echo $sertifikat['nama']; ?></td>
-                        <td><?php echo $sertifikat['pelatihan']; ?></td>
+                        <td><?php echo $sertifikat['nama_pelatihan']; ?></td>
                         <td><?php echo $periode ?></td>
                         <td><?php echo $terbit ?></td>
                         <td>
@@ -181,8 +183,7 @@ require_once BASE_PATH . '/lo/header.php';
     $halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
     $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
 
-    $data_sertifikat = mysqli_query($conn, "SELECT s.*, t.nama_template FROM sertifikat s JOIN template t ON s.template_id = t.id LIMIT $batas OFFSET $halaman_awal");
-
+    $data_sertifikat = mysqli_query($conn, "SELECT s.*, t.nama_template, p.nama_pelatihan FROM sertifikat s JOIN template t ON s.template_id = t.id LEFT JOIN pelatihan p ON s.pelatihan_id = p.id LIMIT $batas OFFSET $halaman_awal");
     $nomor = $halaman_awal + 1;
 
     while ($sertifikat = mysqli_fetch_array($data_sertifikat)) {
@@ -215,7 +216,7 @@ require_once BASE_PATH . '/lo/header.php';
                     </div>
 
                     <div class="text-muted small">
-                        Pelatihan: <?= $sertifikat['pelatihan']; ?>
+                        Pelatihan: <?= $sertifikat['nama_pelatihan']; ?>
                     </div>
                     <hr class="my-2">
 

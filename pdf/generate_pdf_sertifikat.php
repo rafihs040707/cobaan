@@ -19,11 +19,16 @@ if (!$id) die("ID tidak ditemukan");
 // AMBIL DATA SERTIFIKAT + TEMPLATE
 // ======================
 $q = mysqli_query($conn, "
-    SELECT s.*, t.tampak_depan
+    SELECT 
+        s.*, 
+        t.tampak_depan,
+        p.nama_pelatihan
     FROM sertifikat s
     JOIN template t ON s.template_id = t.id
+    LEFT JOIN pelatihan p ON s.pelatihan_id = p.id
     WHERE s.id = '$id'
 ");
+
 
 $data = mysqli_fetch_assoc($q);
 if (!$data) die("Data tidak ditemukan");
@@ -208,7 +213,7 @@ body {
 <img class='bg' src='{$templatePath}'>
 
 <div class='nama'>{$data['nama']}</div>
-<div class='pelatihan'>{$data['pelatihan']}</div>
+<div class='pelatihan'>{$data['nama_pelatihan']}</div>
 <div class='periode'>Periode: {$periode}</div>
 
 <div class='issued'>Issued Date: {$issued}</div>

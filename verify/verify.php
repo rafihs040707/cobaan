@@ -28,13 +28,19 @@ if ($uuid) {
 
     // Ambil data hanya jika status = 1 (VALID)
     $query = mysqli_query($conn, "
-        SELECT s.*, t.nama_template, t.penyelenggara
-        FROM sertifikat s
-        JOIN template t ON s.template_id = t.id
-        WHERE s.nomor_sertifikat LIKE '%-$uuid_safe'
-        AND s.status = 1
-        LIMIT 1
-    ");
+    SELECT 
+        s.*, 
+        t.nama_template, 
+        t.penyelenggara,
+        p.nama_pelatihan
+    FROM sertifikat s
+    JOIN template t ON s.template_id = t.id
+    LEFT JOIN pelatihan p ON s.pelatihan_id = p.id
+    WHERE s.nomor_sertifikat LIKE '%-$uuid_safe'
+    AND s.status = 1
+    LIMIT 1
+");
+
 
     $data = mysqli_fetch_assoc($query);
 
@@ -46,7 +52,7 @@ if ($uuid) {
         $statusValid = true;
 
         $nama = $data['nama'];
-        $pelatihan = $data['pelatihan'];
+        $pelatihan = $data['nama_pelatihan'];
         $nomor_sertifikat = $data['nomor_sertifikat'];
 
         // jika ada kolom penyelenggara

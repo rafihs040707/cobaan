@@ -7,7 +7,7 @@ require_once BASE_PATH . '/config/config.php';
 if (isset($_POST['submit'])) {
 
     $nama        = $_POST['nama'];
-    $kegiatan    = $_POST['pelatihan'];
+    $pelatihan_id    = $_POST['pelatihan'];
     $periode_awal  = $_POST['periode_awal'];   // format: YYYY-MM-DD
     $periode_akhir = $_POST['periode_akhir'];  // format: YYYY-MM-DD
     $issued_date  = $_POST['issued_date'];     // format: YYYY-MM-DD
@@ -17,11 +17,11 @@ if (isset($_POST['submit'])) {
     // simpan ke database (tanpa format periode)
     $stmt = $conn->prepare("
         INSERT INTO sertifikat 
-        (nama, pelatihan, periode_awal, periode_akhir, issued_date, status, template_id)
+        (nama, pelatihan_id, periode_awal, periode_akhir, issued_date, status, template_id)
         VALUES (?, ?, ?, ?, ?, ?, ?)
     ");
 
-    $stmt->bind_param("ssssssi", $nama, $kegiatan, $periode_awal, $periode_akhir, $issued_date, $status, $template_id);
+    $stmt->bind_param("sisssii", $nama, $pelatihan_id, $periode_awal, $periode_akhir, $issued_date, $status, $template_id);
 
     session_start();
 

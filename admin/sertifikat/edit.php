@@ -1,4 +1,4 @@
-<?php 
+<?php
 $allowed_roles = ["admin"];
 require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/auth/cek_login.php';
@@ -27,7 +27,15 @@ $sertifikat = mysqli_fetch_assoc($data_sertifikat);
 
     <div class="mb-4">
         <label class="form-label ms-3">Pelatihan:</label>
-        <input type="text" name="pelatihan" value="<?= $sertifikat['pelatihan']; ?>" class="form-control" maxlength="64" required>
+        <select class="form-select form-select-sm" name="pelatihan" required>
+            <option disabled>Pilih Pelatihan</option>
+            <?php
+            $q = mysqli_query($conn, "SELECT * FROM pelatihan");
+            while ($p = mysqli_fetch_assoc($q)) {
+                echo "<option value='" . $p['id'] . "'>" . $p['nama_pelatihan'] . "</option>";
+            }
+            ?>
+        </select>
     </div>
 
     <div class="mb-4">
@@ -78,4 +86,5 @@ $sertifikat = mysqli_fetch_assoc($data_sertifikat);
 
 <script src="<?= BASE_URL ?>vendor/bs.bundle.min.js"></script>
 </body>
+
 </html>
