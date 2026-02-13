@@ -30,7 +30,7 @@ $sertifikat = mysqli_fetch_assoc($data_sertifikat);
         <select class="form-select form-select-sm" name="pelatihan" required>
             <option disabled>Pilih Pelatihan</option>
             <?php
-            $q = mysqli_query($conn, "SELECT * FROM pelatihan");
+            $q = mysqli_query($conn, "SELECT id, nama_pelatihan FROM pelatihan WHERE status = '1' ORDER BY nama_pelatihan ASC");
             while ($p = mysqli_fetch_assoc($q)) {
                 echo "<option value='" . $p['id'] . "'>" . $p['nama_pelatihan'] . "</option>";
             }

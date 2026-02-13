@@ -90,7 +90,6 @@ $nomor = $halaman_awal + 1;
                                 </td>
                                 <td>
                                     <a class="btn btn-sm btn-info text-black" href="<?= BASE_URL ?>admin/pelatihan/edit.php?id=<?= $pelatihan['id']; ?>">Edit</a>
-                                    <a class="btn btn-sm btn-danger text-white" href="<?= BASE_URL ?>admin/pelatihan/hapus.php?id=<?= $pelatihan['id']; ?>" onclick="return confirm('Apakah yakin data pelatihan ini akan dihapus?');">Hapus</a>
                                 </td>
                             </tr>
                         <?php } ?>

@@ -110,7 +110,6 @@ require_once BASE_PATH . '/config/config.php';
                         </td>
                         <td>
                             <a href="<?= BASE_URL ?>admin/pelatihan/edit.php?id=<?= $pelatihan['id']; ?>" class="btn btn-sm btn-info text-black mt-2">Edit</a>
-                            <a href="<?= BASE_URL ?>admin/pelatihan/hapus.php?id=<?= $pelatihan['id']; ?>" class="btn btn-sm btn-danger text-white mt-2" onclick="return confirm('Apakah yakin data pelatihan ini akan dihapus?');">Hapus</a>
                         </td>
                     </tr>
                 <?php
