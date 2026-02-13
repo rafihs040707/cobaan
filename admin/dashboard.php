@@ -16,6 +16,9 @@ $jumlah_template = mysqli_num_rows($data_template);
 
 $data_sertifikat = mysqli_query($conn, "SELECT * FROM sertifikat");
 $jumlah_sertifikat = mysqli_num_rows($data_sertifikat);
+
+$data_pelatihan = mysqli_query($conn, "SELECT * FROM pelatihan");
+$jumlah_pelatihan = mysqli_num_rows($data_pelatihan);
 ?>
 
 
@@ -38,6 +41,15 @@ $jumlah_sertifikat = mysqli_num_rows($data_sertifikat);
                             <img src="<?= BASE_URL ?>image/icontemplate.png" class="ukuran my-3">
                             <h3 class="my-2"><?php echo $jumlah_template ?></h3>
                             <h5 class="my-3">Template</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 mt-4">
+                    <div class="card">
+                        <div class="card-body text-center text-white" style="background-color: #848484;">
+                            <img src="<?= BASE_URL ?>image/training.png" class="ukuran my-3">
+                            <h3 class="my-2"><?php echo $jumlah_pelatihan ?></h3>
+                            <h5 class="my-3">Pelatihan</h5>
                         </div>
                     </div>
                 </div>
