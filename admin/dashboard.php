@@ -44,7 +44,7 @@ $jumlah_pelatihan = mysqli_num_rows($data_pelatihan);
                 <div class="col-lg-3 mt-4">
                     <div class="card">
                         <div class="card-body text-center" style="background-color: #30D1FF;">
-                            <img src="<?= BASE_URL ?>image/icontemplate.png" class="ukuran my-3">
+                            <img src="<?= BASE_URL ?>image/icon_template.png" class="ukuran my-3">
                             <h3 class="my-2"><?php echo $jumlah_template ?></h3>
                             <h5 class="my-3">Template</h5>
                         </div>
