@@ -1,6 +1,6 @@
 <?php
 ob_start();
-$allowed_roles = ["admin","lo"];
+$allowed_roles = ["admin", "lo"];
 require_once __DIR__ . '/../bootstrap.php';
 require_once BASE_PATH . '/config/config.php';
 require_once BASE_PATH . '/auth/cek_login.php';
@@ -83,7 +83,6 @@ if (empty($data['nomor_sertifikat'])) {
         mysqli_commit($conn);
 
         $data['nomor_sertifikat'] = $nomor_sertifikat;
-
     } catch (Exception $e) {
 
         mysqli_rollback($conn);
@@ -107,9 +106,28 @@ if (date('F Y', $awal) == date('F Y', $akhir)) {
 $issued = date('F d, Y', strtotime($data['issued_date']));
 
 // jika ada penyelenggara di tabel sertifikat
-    if (!empty($data['penyelenggara'])) {
-        $penyelenggara = $data['penyelenggara'];
+if (!empty($data['penyelenggara'])) {
+    $penyelenggara = $data['penyelenggara'];
+}
+
+
+// ======================
+// POTONG NOMOR UNTUK TAMPILAN (SETELAH GENERATE FIX)
+// ======================
+$nomorFull = $data['nomor_sertifikat'];
+
+if (!empty($nomorFull)) {
+    $partsNomor = explode('-', $nomorFull);
+
+    if (isset($partsNomor[1])) {
+        $nomor_tampil = $partsNomor[0] . '-' . substr($partsNomor[1], 0, 8);
+    } else {
+        $nomor_tampil = $nomorFull;
     }
+} else {
+    $nomor_tampil = '';
+}
+
 
 // ======================
 // QR TEXT (LINK VERIFIKASI)
@@ -270,7 +288,7 @@ body {
 <div class='issued'>Issued Date: {$issued}</div>
 <div class='nama_ceo'><u>Endra Prasetya Rudiyanto</u></div>
 <div class='ceo'>Chief Executive Officer</div>
-<div class='nomor'>{$data['nomor_sertifikat']}</div>
+<div class='nomor'>" . $nomor_tampil . "</div>
 
 <div class='qr'>
     <img src='{$qrUrlPath}' width='120'>
@@ -350,6 +368,3 @@ header("Content-Type: application/pdf");
 header("Content-Disposition: attachment; filename=\"" . $filename . "\"");
 readfile($pdfPath);
 exit;
-
-
-?>
