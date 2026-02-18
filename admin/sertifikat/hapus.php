@@ -19,13 +19,13 @@ $data = mysqli_fetch_assoc($query);
 
 if (!$data) {
     $_SESSION['error'] = "Data sertifikat tidak ditemukan.";
-    header("Location: <?= BASE_URL ?>admin/sertifikat/index.php");
+    header("Location:" . BASE_URL . "admin/sertifikat/index.php");
     exit;
 }
 
 // path file pdf & qr
-$pdfPath = "<?= BASE_URL ?>uploads/sertifikat/" . $data['file_sertifikat'];
-$qrPath  = "<?= BASE_URL ?>uploads/qrcode/" . $data['qr_image'];
+$pdfPath = BASE_PATH . "/uploads/sertifikat/" . $data['file_sertifikat'];
+$qrPath  = BASE_PATH . "/uploads/qrcode/" . $data['qr_image'];
 
 // hapus file pdf jika ada
 if (!empty($data['file_sertifikat']) && file_exists($pdfPath)) {
