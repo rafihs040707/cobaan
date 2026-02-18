@@ -1,12 +1,12 @@
 <?php
 session_start();
-
+require_once __DIR__ . '/bootstrap.php';
 if (isset($_SESSION['role'])) {
     if ($_SESSION['role'] == "admin") {
-        header("Location: dashboard_admin.php");
+        header("Location:" . BASE_URL . "admin/dashboard.php");
         exit;
     } elseif ($_SESSION['role'] == "lo") {
-        header("Location: dashboard_lo.php");
+        header("Location:" . BASE_URL . "lo/dashboard.php");
         exit;
     }
 }

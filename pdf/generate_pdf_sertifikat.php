@@ -37,33 +37,60 @@ if (!$data) die("Data tidak ditemukan");
 // GENERATE NOMOR SERTIFIKAT
 // ======================
 if (empty($data['nomor_sertifikat'])) {
+
     $tahun = date('Y');
     $bulan = date('m');
 
-    $q2 = mysqli_query($conn, "
-        SELECT MAX(CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(nomor_sertifikat, '/', -1), '-', 1) AS UNSIGNED)) AS last_no
-        FROM sertifikat
-        WHERE nomor_sertifikat IS NOT NULL
-        AND nomor_sertifikat LIKE 'CERT/$tahun/$bulan/%'
-    ");
+    mysqli_begin_transaction($conn);
 
-    $row = mysqli_fetch_assoc($q2);
+    try {
 
-    $urut = ($row['last_no'] ?? 0) + 1;
-    $nomor = str_pad($urut, 4, '0', STR_PAD_LEFT);
+        // LOCK baris agar admin lain menunggu
+        $q2 = mysqli_query($conn, "
+            SELECT MAX(
+                CAST(
+                    SUBSTRING_INDEX(
+                        SUBSTRING_INDEX(nomor_sertifikat, '/', -1),
+                        '-', 1
+                    ) AS UNSIGNED
+                )
+            ) AS last_no
+            FROM sertifikat
+            WHERE nomor_sertifikat IS NOT NULL
+            AND nomor_sertifikat LIKE 'CERT/$tahun/$bulan/%'
+            FOR UPDATE
+        ");
 
-    $uuid  = substr(bin2hex(random_bytes(4)), 0, 8);
+        $row = mysqli_fetch_assoc($q2);
 
-    $nomor_sertifikat = "CERT/$tahun/$bulan/$nomor-$uuid";
+        $urut = ($row['last_no'] ?? 0) + 1;
+        $nomor = str_pad($urut, 4, '0', STR_PAD_LEFT);
 
-    mysqli_query($conn, "
-        UPDATE sertifikat 
-        SET nomor_sertifikat = '$nomor_sertifikat'
-        WHERE id = '$id'
-    ");
+        $uuid  = bin2hex(random_bytes(8));
 
-    $data['nomor_sertifikat'] = $nomor_sertifikat;
+        $nomor_sertifikat = "CERT/$tahun/$bulan/$nomor-$uuid";
+
+        $update = mysqli_query($conn, "
+            UPDATE sertifikat 
+            SET nomor_sertifikat = '$nomor_sertifikat'
+            WHERE id = '$id'
+        ");
+
+        if (!$update) {
+            throw new Exception("Gagal update nomor sertifikat");
+        }
+
+        mysqli_commit($conn);
+
+        $data['nomor_sertifikat'] = $nomor_sertifikat;
+
+    } catch (Exception $e) {
+
+        mysqli_rollback($conn);
+        die("Terjadi kesalahan saat generate nomor sertifikat.");
+    }
 }
+
 
 // ======================
 // FORMAT TANGGAL
@@ -274,10 +301,18 @@ if (!is_dir($pdfFolder)) {
     mkdir($pdfFolder, 0777, true);
 }
 
-$filename = "sertifikat_" . preg_replace('/[^A-Za-z0-9_\-]/', '_', $data['nama']) . ".pdf";
+$cleanNomor = preg_replace('/[^A-Za-z0-9\-]/', '_', $data['nomor_sertifikat']);
+$filename = $cleanNomor . ".pdf";
 $pdfPath = $pdfFolder . $filename;
 
+// hapus file lama jika ada (overwrite aman)
+if (file_exists($pdfPath)) {
+    unlink($pdfPath);
+}
+
+// simpan file
 file_put_contents($pdfPath, $dompdf->output());
+
 
 // ======================
 // UPDATE DATABASE
