@@ -6,38 +6,50 @@ require_once BASE_PATH . '/auth/cek_login.php';
 
 $cari = isset($_GET['cari']) ? trim($_GET['cari']) : "";
 
-// pagination
+/* =========================
+   PAGINATION
+========================= */
 $batas = 5;
 $halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
 if ($halaman < 1) $halaman = 1;
 
-$halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
+$halaman_awal = ($halaman - 1) * $batas;
 
-// query utama
 $where = "";
-if ($cari != "") {
+
+if (!empty($cari)) {
     $cari_safe = mysqli_real_escape_string($conn, strtolower($cari));
-    $where = "WHERE LOWER(s.nama) LIKE '%$cari_safe%' 
-              OR LOWER(s.pelatihan) LIKE '%$cari_safe%' 
-              OR LOWER(s.nomor_sertifikat) LIKE '%$cari_safe%'";
+    $where = "WHERE 
+        LOWER(s.nama) LIKE '%$cari_safe%' OR
+        LOWER(s.nomor_sertifikat) LIKE '%$cari_safe%' OR
+        LOWER(p.nama_pelatihan) LIKE '%$cari_safe%'";
 }
 
-// hitung jumlah data
-$query_count = "SELECT COUNT(*) as total 
-                FROM sertifikat s 
-                JOIN template t ON s.template_id = t.id 
+/* =========================
+   COUNT TOTAL DATA
+========================= */
+$query_count = "SELECT COUNT(*) as total
+                FROM sertifikat s
+                JOIN template t ON s.template_id = t.id
+                LEFT JOIN pelatihan p ON s.pelatihan_id = p.id
                 $where";
 
 $result_count = mysqli_query($conn, $query_count);
 $row_count = mysqli_fetch_assoc($result_count);
 
-$jumlah_data = $row_count['total'];
+$jumlah_data = $row_count['total'] ?? 0;
 $total_halaman = ceil($jumlah_data / $batas);
 
-// query data + pagination (dipakai untuk desktop & mobile)
-$query_data = "SELECT s.*, t.nama_template 
-               FROM sertifikat s 
-               JOIN template t ON s.template_id = t.id 
+/* =========================
+   AMBIL DATA + LIMIT
+========================= */
+$query_data = "SELECT 
+                    s.*, 
+                    t.nama_template,
+                    p.nama_pelatihan
+               FROM sertifikat s
+               JOIN template t ON s.template_id = t.id
+               LEFT JOIN pelatihan p ON s.pelatihan_id = p.id
                $where
                ORDER BY s.id DESC
                LIMIT $batas OFFSET $halaman_awal";
@@ -46,6 +58,7 @@ $data_sertifikat = mysqli_query($conn, $query_data);
 
 $nomor = $halaman_awal + 1;
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -119,7 +132,7 @@ $nomor = $halaman_awal + 1;
                             <tr>
                                 <th><?= $nomor++; ?>.</th>
                                 <td><?= $sertifikat['nama']; ?></td>
-                                <td><?= $sertifikat['pelatihan']; ?></td>
+                                <td><?= $sertifikat['nama_pelatihan']; ?></td>
                                 <td><?= $periode ?></td>
                                 <td><?= $terbit ?></td>
 
