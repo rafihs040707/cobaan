@@ -2,13 +2,14 @@
 $allowed_roles = ["admin"];
 require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/auth/cek_login.php';
+require_once BASE_PATH . '/admin/header.php';
 require_once BASE_PATH . '/config/config.php';
 
 $cari = isset($_GET['cari']) ? $_GET['cari'] : "";
 
 // pagination
 $batas = 5;
-$halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
+$halaman = isset($_GET['halaman']) ? (int) $_GET['halaman'] : 1;
 $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
 
 // query utama
@@ -43,6 +44,7 @@ $nomor = $halaman_awal + 1;
 <body>
 
     <div class="container mt-4">
+        <h2 class="my-2 ms-3">Data Pelatihan</h2>
         <!-- FORM SEARCH -->
         <form method="GET" action="<?= BASE_URL ?>admin/pelatihan/cari.php" class="col-sm-4 mb-3 ms-4 mt-4">
             <label for="cari" class="ms-3">Masukkan Kata Kunci:</label>
@@ -51,7 +53,8 @@ $nomor = $halaman_awal + 1;
                     value="<?= htmlspecialchars($cari); ?>">
                 <button type="submit" class="btn btn-secondary ms-3">Cari</button>
             </div>
-            <a href="<?= BASE_URL ?>admin/pelatihan/index.php" class="btn btn-secondary text-decoration-none text-white mt-4 ms-3 mb-2">
+            <a href="<?= BASE_URL ?>admin/pelatihan/index.php"
+                class="btn btn-sm btn-primary text-decoration-none text-white mt-4 ms-3 mb-2">
                 Kembali Ke Data pelatihan
             </a>
         </form>
@@ -83,7 +86,8 @@ $nomor = $halaman_awal + 1;
                                 <td><?= $pelatihan['instruktur']; ?></td>
                                 <td><?= $pelatihan['deskripsi']; ?></td>
                                 <td>
-                                    <a class="btn btn-sm btn-info text-black" href="<?= BASE_URL ?>admin/pelatihan/edit.php?id=<?= $pelatihan['id']; ?>">Edit</a>
+                                    <a class="btn btn-sm btn-info text-black"
+                                        href="<?= BASE_URL ?>admin/pelatihan/edit.php?id=<?= $pelatihan['id']; ?>">Edit</a>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -119,7 +123,12 @@ $nomor = $halaman_awal + 1;
 
     </div>
 
+    </div>
+    </div>
+    </div>
+
     <script src="<?= BASE_URL ?>vendor/bs.bundle.min.js"></script>
+    <script src="<?= BASE_URL ?>vendor/sidebar.js"></script>
 </body>
 
 </html>

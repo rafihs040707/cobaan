@@ -2,6 +2,7 @@
 $allowed_roles = ["admin"];
 require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/auth/cek_login.php';
+require_once BASE_PATH . '/admin/header.php';
 require_once BASE_PATH . '/config/config.php';
 
 $cari = isset($_GET['cari']) ? $_GET['cari'] : "";
@@ -40,9 +41,10 @@ $nomor = $halaman_awal + 1;
     <link rel="icon" type="image/png" href="<?= BASE_URL ?>image/logo.png">
 </head>
 
-<body>
+<div>
 
     <div class="container mt-4">
+        <h2 class="my-2 ms-3">Data Template</h2>
         <!-- FORM SEARCH -->
         <form method="GET" action="<?= BASE_URL ?>admin/template/cari.php" class="col-sm-4 mb-3 ms-4 mt-4">
             <label for="cari" class="ms-3">Masukkan Kata Kunci:</label>
@@ -52,7 +54,7 @@ $nomor = $halaman_awal + 1;
                 <button type="submit" class="btn btn-secondary ms-3">Cari</button>
             </div>
             <a href="<?= BASE_URL ?>admin/template/index.php"
-                class="btn btn-secondary text-decoration-none text-white mt-4 ms-3 mb-2">
+                class="btn btn-sm btn-primary text-decoration-none text-white mt-4 ms-3 mb-2">
                 Kembali Ke Data Template
             </a>
         </form>
@@ -170,8 +172,11 @@ $nomor = $halaman_awal + 1;
         <?php } ?>
 
     </div>
-
-    <script src="<?= BASE_URL ?>vendor/bs.bundle.min.js"></script>
+</div>
+</div>
+</div>
+<script src="<?= BASE_URL ?>vendor/bs.bundle.min.js"></script>
+<script src="<?= BASE_URL ?>vendor/sidebar.js"></script>
 </body>
 
 </html>

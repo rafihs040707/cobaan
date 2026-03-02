@@ -2,6 +2,7 @@
 $allowed_roles = ["admin"];
 require_once __DIR__ . '/../../bootstrap.php';
 require_once BASE_PATH . '/auth/cek_login.php';
+require_once BASE_PATH . '/admin/header.php';
 require_once BASE_PATH . '/config/config.php';
 
 $cari = strtolower(trim($_GET['cari'] ?? ''));
@@ -10,22 +11,8 @@ $cari = strtolower(trim($_GET['cari'] ?? ''));
 // PAGINATION
 // ======================
 $batas = 5;
-$halaman = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
+$halaman = isset($_GET['halaman']) ? (int) $_GET['halaman'] : 1;
 $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
-
-// ======================
-// MAPPING STATUS
-// ======================
-$statusMap = [
-    'aktif' => 1,
-    'active' => 1,
-    'enable' => 1,
-    'on' => 1,
-    'nonaktif' => 0,
-    'inactive' => 0,
-    'disable'=> 0,
-    'off'=> 0,
-];
 
 // ======================
 // BUILD WHERE DINAMIS
@@ -35,20 +22,12 @@ $params = [];
 $types = "";
 
 if ($cari !== "") {
-
-    if (isset($statusMap[$cari])) {
-        // 🔥 jika user cari "aktif/nonaktif"
-        $where = "WHERE status = ?";
-        $params[] = $statusMap[$cari];
-        $types .= "i";
-    } else {
-        // 🔥 pencarian normal
-        $where = "WHERE nama LIKE ? OR LOWER(email) LIKE ? OR LOWER(role) LIKE ?";
-        $like = "%$cari%";
-        $params = [$like, $like, $like];
-        $types .= "sss";
-    }
+    $where = "WHERE nama LIKE ? OR LOWER(email) LIKE ? OR LOWER(role) LIKE ?";
+    $like = "%$cari%";
+    $params = [$like, $like, $like];
+    $types .= "sss";
 }
+
 
 // ======================
 // HITUNG TOTAL DATA
@@ -97,9 +76,10 @@ $nomor = $halaman_awal + 1;
     <link rel="icon" type="image/png" href="<?= BASE_URL ?>image/logo.png">
 </head>
 
-<body>
+<div>
 
     <div class="container mt-4">
+        <h2 class="my-2 ms-3">Data User</h2>
         <!-- FORM SEARCH -->
         <form method="GET" action="<?= BASE_URL ?>admin/user/cari.php" class="col-sm-4 mb-3 ms-4 mt-4">
             <label for="cari" class="ms-3">Masukkan Kata Kunci:</label>
@@ -108,7 +88,8 @@ $nomor = $halaman_awal + 1;
                     value="<?= htmlspecialchars($cari); ?>">
                 <button type="submit" class="btn btn-secondary ms-3">Cari</button>
             </div>
-            <a href="<?= BASE_URL ?>admin/user/index.php" class="btn btn-secondary text-decoration-none text-white mt-4 ms-3 mb-2">
+            <a href="<?= BASE_URL ?>admin/user/index.php"
+                class="btn btn-sm btn-primary text-decoration-none text-white mt-4 ms-3 mb-2">
                 Kembali Ke Data user
             </a>
         </form>
@@ -128,7 +109,6 @@ $nomor = $halaman_awal + 1;
                         <th>Nama</th>
                         <th>Email</th>
                         <th>Role</th>
-                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -141,8 +121,10 @@ $nomor = $halaman_awal + 1;
                                 <td><?= $user['email']; ?></td>
                                 <td><?= $user['role']; ?></td>
                                 <td>
-                                    <a class="btn btn-sm btn-info text-black" href="<?= BASE_URL ?>admin/user/edit.php?id=<?= $user['id']; ?>">Edit</a>
-                                    <a class="btn btn-sm btn-danger text-black" href="<?= BASE_URL ?>admin/user/hapus.php?id=<?= $user['id']; ?>">Hapus</a>
+                                    <a class="btn btn-sm btn-info text-black"
+                                        href="<?= BASE_URL ?>admin/user/edit.php?id=<?= $user['id']; ?>">Edit</a>
+                                    <a class="btn btn-sm btn-danger text-black"
+                                        href="<?= BASE_URL ?>admin/user/hapus.php?id=<?= $user['id']; ?>">Hapus</a>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -178,7 +160,11 @@ $nomor = $halaman_awal + 1;
 
     </div>
 
-    <script src="<?= BASE_URL ?>vendor/bs.bundle.min.js"></script>
+</div>
+</div>
+</div>
+<script src="<?= BASE_URL ?>vendor/bs.bundle.min.js"></script>
+<script src="<?= BASE_URL ?>vendor/sidebar.js"></script>
 </body>
 
 </html>
