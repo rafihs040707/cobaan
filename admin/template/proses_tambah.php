@@ -41,7 +41,7 @@ if (isset($_POST['submit'])) {
     $tampak_belakang = uploadFile('tampak_belakang', $targetDir);
 
     $stmt = $conn->prepare("INSERT INTO template (nama_template, penyelenggara, tampak_depan, tampak_belakang) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("sssss", $nama_template, $penyelenggara, $tampak_depan, $tampak_belakang);
+    $stmt->bind_param("ssss", $nama_template, $penyelenggara, $tampak_depan, $tampak_belakang);
     
 
 

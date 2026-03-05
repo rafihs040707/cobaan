@@ -6,47 +6,65 @@ require_once BASE_PATH . '/config/config.php';
 
 $id = $_GET['id'] ?? null;
 
-if (!$id) {
-    $_SESSION['error'] = "ID template tidak ditemukan.";
+if (!$id || !ctype_digit($id)) {
+    $_SESSION['error'] = "ID template tidak valid.";
     header("Location:" . BASE_URL . "admin/template/index.php");
     exit;
 }
 
-// ambil data template dulu untuk dapat nama file gambarnya
-$query = mysqli_query($conn, "SELECT tampak_depan, tampak_belakang FROM template WHERE id='$id'");
-$data = mysqli_fetch_assoc($query);
+$conn->begin_transaction();
 
-if (!$data) {
-    $_SESSION['error'] = "Template tidak ditemukan.";
-    header("Location:" . BASE_URL . "admin/template/index.php");
-    exit;
-}
+try {
 
-// path file gambar
-$filePath = BASE_PATH . "/uploads/template/" . $data['tampak_depan'];
-$filePath = BASE_PATH . "/uploads/template/" . $data['tampak_belakang'];
+    // 🔒 ambil + lock row
+    $stmt = $conn->prepare("
+        SELECT tampak_depan, tampak_belakang 
+        FROM template 
+        WHERE id=? 
+        FOR UPDATE
+    ");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $data = $stmt->get_result()->fetch_assoc();
 
-// hapus data dari database
-$delete = mysqli_query($conn, "DELETE FROM template WHERE id='$id'");
-
-if ($delete) {
-
-    // hapus file jika ada
-    if (!empty($data['tampak_depan']) && file_exists($filePath)) {
-        unlink($filePath);
+    if (!$data) {
+        throw new Exception("Template tidak ditemukan.");
     }
-    // hapus file jika ada
-    if (!empty($data['tampak_belakang']) && file_exists($filePath)) {
-        unlink($filePath);
+
+    // path file
+    $fileDepan = BASE_PATH . "/uploads/template/" . $data['tampak_depan'];
+    $fileBelakang = BASE_PATH . "/uploads/template/" . $data['tampak_belakang'];
+
+    // 🧹 hapus file dulu
+    if (!empty($data['tampak_depan']) && file_exists($fileDepan)) {
+        if (!unlink($fileDepan)) {
+            throw new Exception("Gagal menghapus file depan.");
+        }
     }
+
+    if (!empty($data['tampak_belakang']) && file_exists($fileBelakang)) {
+        if (!unlink($fileBelakang)) {
+            throw new Exception("Gagal menghapus file belakang.");
+        }
+    }
+
+    // 🗑️ hapus DB
+    $stmtDel = $conn->prepare("DELETE FROM template WHERE id=?");
+    $stmtDel->bind_param("i", $id);
+    $stmtDel->execute();
+
+    // ✅ commit
+    $conn->commit();
 
     $_SESSION['success'] = "Template berhasil dihapus.";
-    header("Location:" . BASE_URL . "admin/template/index.php");
-    exit;
 
-} else {
-    $_SESSION['error'] = "Template gagal dihapus.";
-    header("Location:" . BASE_URL . "admin/template/index.php");
-    exit;
+} catch (Exception $e) {
+
+    // ❌ rollback
+    $conn->rollback();
+
+    $_SESSION['error'] = $e->getMessage();
 }
 
+header("Location:" . BASE_URL . "admin/template/index.php");
+exit;

@@ -77,7 +77,6 @@ require_once BASE_PATH . '/config/config.php';
                     <th>No</th>
                     <th>Nama Template</th>
                     <th>Penyelenggara</th>
-                    <th>Instruktur</th>
                     <th>Tampak Depan</th>
                     <th>Tampak Belakang</th>
                     <th>Aksi</th>
