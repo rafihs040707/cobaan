@@ -6,13 +6,36 @@ require_once BASE_PATH . '/config/config.php';
 
 $id = $_GET['id'] ?? null;
 
-if (!$id) {
-    $_SESSION['error'] = "ID pelatihan tidak ditemukan.";
+// ✅ validasi ketat
+if (!$id || !ctype_digit($id)) {
+    $_SESSION['error'] = "ID user tidak valid.";
     header("Location:" . BASE_URL . "admin/user/index.php");
     exit;
 }
 
-$delete = mysqli_query($conn, "DELETE FROM users WHERE id='$id'");
+// 🛡️ optional: cegah hapus diri sendiri
+if ($id == $_SESSION['user_id']) {
+    $_SESSION['error'] = "Tidak bisa menghapus akun sendiri.";
+    header("Location:" . BASE_URL . "admin/user/index.php");
+    exit;
+}
+
+// 🔍 cek user ada
+$stmtCheck = $conn->prepare("SELECT id FROM users WHERE id=?");
+$stmtCheck->bind_param("i", $id);
+$stmtCheck->execute();
+$result = $stmtCheck->get_result();
+
+if ($result->num_rows === 0) {
+    $_SESSION['error'] = "User tidak ditemukan.";
+    header("Location:" . BASE_URL . "admin/user/index.php");
+    exit;
+}
+
+// 🗑️ delete aman
+$stmtDel = $conn->prepare("DELETE FROM users WHERE id=?");
+$stmtDel->bind_param("i", $id);
+$delete = $stmtDel->execute();
 
 if ($delete) {
     $_SESSION['success'] = "Data user berhasil dihapus.";

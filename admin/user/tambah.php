@@ -36,6 +36,7 @@ require_once BASE_PATH . '/admin/header.php';
             <option selected disabled>Pilih Role</option>
             <option value="admin">Admin</option>
             <option value="lo">LO</option>
+            <option value="direktur">Direktur</option>
         </select>
     </div>
 

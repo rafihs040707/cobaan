@@ -31,6 +31,7 @@ $user = mysqli_fetch_assoc($data_user);
             <option disabled>Pilih Status</option>
             <option value="admin" <?= ($user['role'] == 'admin') ? 'selected' : ''; ?>>Admin</option>
             <option value="lo" <?= ($user['role'] == 'lo') ? 'selected' : ''; ?>>LO</option>
+            <option value="direktur" <?= ($user['role'] == 'direktur') ? 'selected' : ''; ?>>Direktur</option>
         </select>
     </div>
 
