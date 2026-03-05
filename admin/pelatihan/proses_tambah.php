@@ -6,9 +6,9 @@ require_once BASE_PATH . '/config/config.php';
 
 if (isset($_POST['submit'])) {
 
-    $nama_pelatihan        = $_POST['nama_pelatihan'];
-    $instruktur    = $_POST['instruktur'];
-    $deskripsi    = $_POST['deskripsi'];
+    $nama_pelatihan     = $_POST['nama_pelatihan'];
+    $instruktur         = $_POST['instruktur'];
+    $deskripsi          = $_POST['deskripsi'];
 
     // simpan ke database (tanpa format periode)
     $stmt = $conn->prepare("

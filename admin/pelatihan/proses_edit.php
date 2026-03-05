@@ -6,10 +6,10 @@ require_once BASE_PATH . '/config/config.php';
 
 if (isset($_POST['update'])) {
 
-    $id           = $_POST['id'];
-    $nama_pelatihan         = $_POST['nama_pelatihan'];
-    $instruktur    = $_POST['instruktur'];
-    $deskripsi    = $_POST['deskripsi'];
+    $id                 = $_POST['id'];
+    $nama_pelatihan     = $_POST['nama_pelatihan'];
+    $instruktur         = $_POST['instruktur'];
+    $deskripsi          = $_POST['deskripsi'];
 
     $stmt = $conn->prepare("
         UPDATE pelatihan 
@@ -20,7 +20,7 @@ if (isset($_POST['update'])) {
     ");
 
     $stmt->bind_param(
-        "ssii",
+        "sssi",
         $nama_pelatihan,
         $instruktur,
         $deskripsi,
