@@ -106,10 +106,14 @@ require_once BASE_PATH . '/config/config.php';
                         <td><?php echo $user['role']; ?></td>
                         <td>
                             <a href="<?= BASE_URL ?>admin/user/edit.php?id=<?= $user['id']; ?>"
-                                class="btn btn-sm btn-info text-black mt-2">Edit</a>
+                                class="btn btn-sm btn-info text-black">Edit</a>
+                            <a href="<?= BASE_URL ?>admin/user/reset_password.php?id=<?= $user['id'] ?>"
+                                class="btn btn-warning btn-sm"
+                                onclick="return confirm('Yakin reset password user ini?')">Reset
+                                Password</a>
                             <a href="<?= BASE_URL ?>admin/user/hapus.php?id=<?= $user['id']; ?>"
-                                class="btn btn-sm btn-danger text-black mt-2"
-                                onclick="return confirm('Apakah yakin data template ini akan dihapus?');">Hapus</a>
+                                class="btn btn-sm btn-danger"
+                                onclick="return confirm('Apakah yakin data user ini akan dihapus?');">Hapus</a>
                         </td>
                     </tr>
                     <?php
