@@ -71,7 +71,7 @@ require_once BASE_PATH . '/direktur/header.php';
 
 <div class="container mb-3">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label class="form-label">Filter Validasi</label>
             <select id="filterStatus" class="form-select">
                 <option value="">Semua</option>
@@ -79,9 +79,21 @@ require_once BASE_PATH . '/direktur/header.php';
                 <option value="approved">Approved</option>
             </select>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label class="form-label">Filter Bulan</label>
             <input type="month" id="filterBulan" class="form-control">
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Tampilkan</label>
+            <form method="GET" id="limitForm">
+                <select name="limit" class="form-select" onchange="document.getElementById('limitForm').submit()">
+                    <?php $limit = $_GET['limit'] ?? 5; ?>
+                    <option value="5" <?= $limit == 5 ? 'selected' : '' ?>>5</option>
+                    <option value="10" <?= $limit == 10 ? 'selected' : '' ?>>10</option>
+                    <option value="25" <?= $limit == 25 ? 'selected' : '' ?>>25</option>
+                    <option value="50" <?= $limit == 50 ? 'selected' : '' ?>>50</option>
+                </select>
+            </form>
         </div>
     </div>
 </div>
@@ -113,7 +125,7 @@ require_once BASE_PATH . '/direktur/header.php';
                     </thead>
                     <tbody>
                         <?php
-                        $batas = 5;
+                        $batas = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
                         $halaman = isset($_GET['halaman']) ? (int) $_GET['halaman'] : 1;
                         $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
 
@@ -176,21 +188,21 @@ require_once BASE_PATH . '/direktur/header.php';
                     <ul class="pagination justify-content-end">
                         <li class="page-item">
                             <a class="page-link" <?php if ($halaman > 1) {
-                                echo "href='?halaman=$previous'";
+                                echo "href=href='?halaman=$previous&limit=$batas'";
                             } ?>>Previous</a>
                         </li>
                         <?php
                         for ($x = 1; $x <= $total_halaman; $x++) {
                             ?>
                             <li class="page-item"><a class="page-link"
-                                    href="?halaman=<?php echo $x ?>"><?php echo $x; ?></a>
+                                    href="?halaman=<?php echo $x ?>&limit=<?php echo $batas ?>"><?php echo $x; ?></a>
                             </li>
                             <?php
                         }
                         ?>
                         <li class="page-item">
                             <a class="page-link" <?php if ($halaman < $total_halaman) {
-                                echo "href='?halaman=$next'";
+                                echo "href='?halaman=$next&limit=$batas'";
                             } ?>>Next</a>
                         </li>
                     </ul>
