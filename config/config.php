@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root";
 $password = ""; 
-$dbname = "alpha"; 
+$dbname = "alpha_2"; 
 $port = 3306;
 
 // Correct connection using variables
