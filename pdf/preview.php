@@ -19,12 +19,17 @@ if (!$data) {
 $filename = $data['file_sertifikat'];
 $pdfPath  = BASE_PATH . "/uploads/sertifikat/" . $filename;
 
-if (!file_exists($pdfPath)) {
-    die("File belum digenerate.");
+if ($filename && file_exists($pdfPath)) {
+
+    // jika file sudah ada tampilkan PDF
+    $pdfUrl = BASE_URL . "uploads/sertifikat/" . $filename;
+    header("Location: $pdfUrl");
+    exit;
+
+} else {
+
+    // jika belum ada tampilkan preview template
+    header("Location: generate.php?id=$id&mode=preview");
+    exit;
+
 }
-
-// redirect ke file PDF asli
-$pdfUrl = BASE_URL . "uploads/sertifikat/" . $filename;
-
-header("Location: $pdfUrl");
-exit;
