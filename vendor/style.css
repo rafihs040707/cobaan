@@ -111,3 +111,7 @@ html,body{
     justify-content:space-between;
     margin-bottom:8px;
 }
+
+.autocomplete-list div:hover {
+    background-color: #f1f1f1;
+}
