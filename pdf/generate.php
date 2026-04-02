@@ -200,7 +200,28 @@ if ($approved) {
     $ttdDirektur = "<img src='{$ttdPath}' width='200'>";
 }
 
+$qMateri = mysqli_query($conn, "
+    SELECT 
+        sm.urutan,
+        sm.durasi,
+        mm.nama_materi
+    FROM sertifikat_materi sm
+    JOIN materi_master mm ON sm.materi_id = mm.id
+    WHERE sm.sertifikat_id = '$id'
+    ORDER BY sm.urutan ASC
+");
 
+$materiList = [];
+$totalDurasi = 0;
+
+while ($row = mysqli_fetch_assoc($qMateri)) {
+    $materiList[] = $row;
+
+    // kalau isinya angka → hitung total
+    if (is_numeric($row['durasi'])) {
+        $totalDurasi += (int)$row['durasi'];
+    }
+}
 
 
 
