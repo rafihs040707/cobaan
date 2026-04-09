@@ -206,8 +206,7 @@
     <div class="halaman belakang">
 
         <div class="judul_belakang">
-            PELATIHAN MICROSOFT EXCEL 2019 <br>
-            DAFTAR MATERI PELATIHAN
+            <?= $data['nama_pelatihan'] ?>
         </div>
 
         <table class="info_peserta">
