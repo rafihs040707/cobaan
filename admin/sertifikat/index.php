@@ -101,20 +101,78 @@ require_once BASE_PATH . '/config/config.php';
                 $jumlah_data = mysqli_num_rows($data);
                 $total_halaman = ceil($jumlah_data / $batas);
 
-                $data_sertifikat = mysqli_query($conn, "SELECT s.*, t.nama_template, p.nama_pelatihan FROM sertifikat s JOIN template t ON s.template_id = t.id LEFT JOIN pelatihan p ON s.pelatihan_id = p.id LIMIT $batas OFFSET $halaman_awal");
+                $data_sertifikat = mysqli_query($conn, "SELECT s.*, t.nama_template, t.locale, p.nama_pelatihan FROM sertifikat s JOIN template t ON s.template_id = t.id LEFT JOIN pelatihan p ON s.pelatihan_id = p.id LIMIT $batas OFFSET $halaman_awal");
                 $nomor = $halaman_awal + 1;
                 while ($sertifikat = mysqli_fetch_array($data_sertifikat)) {
+                    $locale = $sertifikat['locale'] ?? 'en';
+
                     $awal = strtotime($sertifikat['periode_awal']);
                     $akhir = strtotime($sertifikat['periode_akhir']);
 
-                    if (date('F Y', $awal) == date('F Y', $akhir)) {
-                        $periode = date('F d', $awal) . " - " . date('d, Y', $akhir);
+                    $d1 = date('d', $awal);
+                    $d2 = date('d', $akhir);
+
+                    $m1 = (int) date('n', $awal);
+                    $m2 = (int) date('n', $akhir);
+
+                    $y1 = date('Y', $awal);
+                    $y2 = date('Y', $akhir);
+
+                    $bulan_id = [
+                        1 => 'Januari',
+                        2 => 'Februari',
+                        3 => 'Maret',
+                        4 => 'April',
+                        5 => 'Mei',
+                        6 => 'Juni',
+                        7 => 'Juli',
+                        8 => 'Agustus',
+                        9 => 'September',
+                        10 => 'Oktober',
+                        11 => 'November',
+                        12 => 'Desember'
+                    ];
+
+                    if ($locale === 'id') {
+
+                        if ($m1 === $m2 && $y1 === $y2) {
+                            $periode = "{$d1} - {$d2} {$bulan_id[$m2]} {$y2}";
+                        } elseif ($y1 === $y2) {
+                            $periode = "{$d1} {$bulan_id[$m1]} - {$d2} {$bulan_id[$m2]} {$y2}";
+                        } else {
+                            $periode = "{$d1} {$bulan_id[$m1]} {$y1} - {$d2} {$bulan_id[$m2]} {$y2}";
+                        }
+
                     } else {
-                        $periode = date('F d', $awal) . " - " . date('F d, Y', $akhir);
+
+                        if (date('F Y', $awal) == date('F Y', $akhir)) {
+                            $periode = date('F d', $awal) . " - " . date('d, Y', $akhir);
+                        } elseif ($y1 === $y2) {
+                            $periode = date('F d', $awal) . " - " . date('F d, Y', $akhir);
+                        } else {
+                            $periode = date('F d, Y', $awal) . " - " . date('F d, Y', $akhir);
+                        }
                     }
-                    $terbit = !empty($sertifikat['issued_date'])
-                        ? date('F d, Y', strtotime($sertifikat['issued_date']))
-                        : '<span class="badge bg-warning text-dark">Belum divalidasi</span>';
+
+
+                    // ===== ISSUED DATE =====
+                    if (!empty($sertifikat['issued_date'])) {
+
+                        $ts = strtotime($sertifikat['issued_date']);
+
+                        if ($locale === 'id') {
+                            $d = date('d', $ts);
+                            $m = (int) date('n', $ts);
+                            $y = date('Y', $ts);
+
+                            $terbit = "{$d} {$bulan_id[$m]} {$y}";
+                        } else {
+                            $terbit = date('F d, Y', $ts);
+                        }
+
+                    } else {
+                        $terbit = '<span class="badge bg-warning text-dark">Belum divalidasi</span>';
+                    }
                     ?>
                     <tr>
                         <th><?php echo $nomor++; ?>.</th>
@@ -203,23 +261,80 @@ require_once BASE_PATH . '/config/config.php';
     $halaman = isset($_GET['halaman']) ? (int) $_GET['halaman'] : 1;
     $halaman_awal = ($halaman > 1) ? ($halaman * $batas) - $batas : 0;
 
-    $data_sertifikat = mysqli_query($conn, "SELECT s.*, t.nama_template, p.nama_pelatihan FROM sertifikat s JOIN template t ON s.template_id = t.id LEFT JOIN pelatihan p ON s.pelatihan_id = p.id LIMIT $batas OFFSET $halaman_awal");
+    $data_sertifikat = mysqli_query($conn, "SELECT s.*, t.nama_template, t.locale, p.nama_pelatihan FROM sertifikat s JOIN template t ON s.template_id = t.id LEFT JOIN pelatihan p ON s.pelatihan_id = p.id LIMIT $batas OFFSET $halaman_awal");
     $nomor = $halaman_awal + 1;
 
     while ($sertifikat = mysqli_fetch_array($data_sertifikat)) {
 
+        $locale = $sertifikat['locale'] ?? 'en';
+
         $awal = strtotime($sertifikat['periode_awal']);
         $akhir = strtotime($sertifikat['periode_akhir']);
 
-        if (date('F Y', $awal) == date('F Y', $akhir)) {
-            $periode = date('F d', $awal) . " - " . date('d, Y', $akhir);
+        $d1 = date('d', $awal);
+        $d2 = date('d', $akhir);
+
+        $m1 = (int) date('n', $awal);
+        $m2 = (int) date('n', $akhir);
+
+        $y1 = date('Y', $awal);
+        $y2 = date('Y', $akhir);
+
+        $bulan_id = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember'
+        ];
+
+        if ($locale === 'id') {
+
+            if ($m1 === $m2 && $y1 === $y2) {
+                $periode = "{$d1} - {$d2} {$bulan_id[$m2]} {$y2}";
+            } elseif ($y1 === $y2) {
+                $periode = "{$d1} {$bulan_id[$m1]} - {$d2} {$bulan_id[$m2]} {$y2}";
+            } else {
+                $periode = "{$d1} {$bulan_id[$m1]} {$y1} - {$d2} {$bulan_id[$m2]} {$y2}";
+            }
+
         } else {
-            $periode = date('F d', $awal) . " - " . date('F d, Y', $akhir);
+
+            if (date('F Y', $awal) == date('F Y', $akhir)) {
+                $periode = date('F d', $awal) . " - " . date('d, Y', $akhir);
+            } elseif ($y1 === $y2) {
+                $periode = date('F d', $awal) . " - " . date('F d, Y', $akhir);
+            } else {
+                $periode = date('F d, Y', $awal) . " - " . date('F d, Y', $akhir);
+            }
         }
 
-        $terbit = !empty($sertifikat['issued_date'])
-            ? date('F d, Y', strtotime($sertifikat['issued_date']))
-            : '<span class="badge bg-warning text-dark">Menunggu Validasi Direktur</span>';
+
+        // ===== ISSUED DATE =====
+        if (!empty($sertifikat['issued_date'])) {
+
+            $ts = strtotime($sertifikat['issued_date']);
+
+            if ($locale === 'id') {
+                $d = date('d', $ts);
+                $m = (int) date('n', $ts);
+                $y = date('Y', $ts);
+
+                $terbit = "{$d} {$bulan_id[$m]} {$y}";
+            } else {
+                $terbit = date('F d, Y', $ts);
+            }
+
+        } else {
+            $terbit = '<span class="badge bg-warning text-dark">Belum divalidasi</span>';
+        }
         ?>
         <div class="d-block d-md-none">
             <div class="card mb-2 border-primary shadow-sm">
