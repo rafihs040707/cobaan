@@ -103,7 +103,7 @@ if ($nomor) {
 // ======================
 $color = $statusValid ? "#329F4A" : "#E63946";
 $icon = $statusValid ? BASE_URL . "image/centang.png" : BASE_URL . "image/silang.png";
-$title = $statusValid ? "Sertifikat Valid dan Terdaftar" : "Sertifikat tidak Terdaftar";
+$title = $statusValid ? "Sertifikat Tervalidasi dan Terdaftar" : "Sertifikat tidak Terdaftar";
 ?>
 
 <!DOCTYPE html>
@@ -235,7 +235,7 @@ $title = $statusValid ? "Sertifikat Valid dan Terdaftar" : "Sertifikat tidak Ter
                     </tr>
 
                     <tr>
-                        <td>Nomor Sertifikat</td>
+                        <td>No. Sertifikat</td>
                         <td>:</td>
                         <td><?= htmlspecialchars($nomor_tampil); ?></td>
                     </tr>
@@ -272,18 +272,28 @@ $title = $statusValid ? "Sertifikat Valid dan Terdaftar" : "Sertifikat tidak Ter
                     <img src="<?= BASE_URL ?>image/download.png" style="width: 25px; height: 25px;">
                     Download Sertifikat
                 </a>
-
-                <a href="<?= $pdfUrl; ?>" target="_blank" class="btn btn-info text-black px-4">
+                <button onclick="printPDF()" class="btn btn-info text-black px-4">
                     <img src="<?= BASE_URL ?>image/print.png" style="width: 25px; height: 25px;">
                     Print Sertifikat
-                </a>
-
+                </button>
             </div>
         <?php } ?>
-
     </div>
 
+    <iframe id="printFrame" style="display:none;"></iframe>
+
     <script src="<?= BASE_URL ?>vendor/bs.bundle.min.js"></script>
+    <script>
+        function printPDF() {
+            const frame = document.getElementById('printFrame');
+            frame.src = "<?= $pdfUrl ?>";
+
+            frame.onload = function () {
+                frame.contentWindow.focus();
+                frame.contentWindow.print();
+            };
+        }
+    </script>
 </body>
 
 </html>
