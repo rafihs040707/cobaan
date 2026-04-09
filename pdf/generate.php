@@ -38,12 +38,88 @@ function randomLetters($length, $chars)
     return $result;
 }
 
-function formatPeriode($awal, $akhir)
+function getBulanIndo($bulan)
 {
+    $bulanArr = [
+        1 => 'Januari',
+        2 => 'Februari',
+        3 => 'Maret',
+        4 => 'April',
+        5 => 'Mei',
+        6 => 'Juni',
+        7 => 'Juli',
+        8 => 'Agustus',
+        9 => 'September',
+        10 => 'Oktober',
+        11 => 'November',
+        12 => 'Desember'
+    ];
+
+    return $bulanArr[(int) $bulan] ?? '';
+}
+
+function formatPeriode($awal, $akhir, $locale = 'en')
+{
+    if ($locale === 'id') {
+
+        $d1 = date('d', $awal);
+        $d2 = date('d', $akhir);
+
+        $m1 = (int) date('n', $awal);
+        $m2 = (int) date('n', $akhir);
+
+        $y1 = date('Y', $awal);
+        $y2 = date('Y', $akhir);
+
+        // sama bulan & tahun
+        if ($m1 === $m2 && $y1 === $y2) {
+            return "{$d1} - {$d2} " . getBulanIndo($m2) . " {$y2}";
+        }
+
+        // beda bulan tapi sama tahun
+        if ($y1 === $y2) {
+            return "{$d1} " . getBulanIndo($m1) . " - {$d2} " . getBulanIndo($m2) . " {$y2}";
+        }
+
+        // beda tahun
+        return "{$d1} " . getBulanIndo($m1) . " {$y1} - {$d2} " . getBulanIndo($m2) . " {$y2}";
+    }
+
+    // default English
+    $y1 = date('Y', $awal);
+    $y2 = date('Y', $akhir);
+
     if (date('F Y', $awal) == date('F Y', $akhir)) {
+        // sama bulan & tahun
         return date('F d', $awal) . " - " . date('d, Y', $akhir);
     }
-    return date('F d', $awal) . " - " . date('F d, Y', $akhir);
+
+    if ($y1 === $y2) {
+        // beda bulan tapi sama tahun
+        return date('F d', $awal) . " - " . date('F d, Y', $akhir);
+    }
+
+    // beda bulan & beda tahun
+    return date('F d, Y', $awal) . " - " . date('F d, Y', $akhir);
+}
+
+function formatTanggalIssued($tanggal, $locale = 'en')
+{
+    if (empty($tanggal)) {
+        return '-';
+    }
+
+    $ts = strtotime($tanggal);
+
+    if ($locale === 'id') {
+        $d = date('d', $ts);
+        $m = (int) date('n', $ts);
+        $y = date('Y', $ts);
+        return "{$d} " . getBulanIndo($m) . " {$y}";
+    }
+
+    // default English
+    return date('F d, Y', $ts);
 }
 
 $q = mysqli_query($conn, "
@@ -52,6 +128,7 @@ SELECT
     t.tampak_depan,
     t.tampak_belakang,
     t.file_layout,
+    t.locale,
     p.nama_pelatihan
 FROM sertifikat s
 JOIN template t ON s.template_id = t.id
@@ -144,15 +221,15 @@ if (!$isPreview && empty($data['nomor_sertifikat'])) {
 
     }
 }
+$locale = $data['locale'] ?? 'en';
 
 $periode = formatPeriode(
     strtotime($data['periode_awal']),
-    strtotime($data['periode_akhir'])
+    strtotime($data['periode_akhir']),
+    $locale
 );
 
-$issued = !empty($data['issued_date'])
-    ? date('F d, Y', strtotime($data['issued_date']))
-    : '-';
+$issued = formatTanggalIssued($data['issued_date'], $locale);
 
 $nomorFull = $data['nomor_sertifikat'] ?? '';
 $pos = strpos($nomorFull, '/');
@@ -168,7 +245,7 @@ if (!is_dir($qrFolder)) {
 }
 
 $kodeUtama = explode('/', $kode_unik)[0];
-$safeKode  = preg_replace('/[^A-Za-z0-9]/', '', $kodeUtama);
+$safeKode = preg_replace('/[^A-Za-z0-9]/', '', $kodeUtama);
 $qrFilename = "qr_" . $safeKode . ".png";
 $qrPath = $qrFolder . $qrFilename;
 $qrUrlPath = BASE_URL . "uploads/qrcode/" . $qrFilename;
@@ -219,7 +296,7 @@ while ($row = mysqli_fetch_assoc($qMateri)) {
 
     // kalau isinya angka → hitung total
     if (is_numeric($row['durasi'])) {
-        $totalDurasi += (int)$row['durasi'];
+        $totalDurasi += (int) $row['durasi'];
     }
 }
 
