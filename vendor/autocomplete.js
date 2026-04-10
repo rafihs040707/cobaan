@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function cekLayout() {
         let selectedText = layoutSelect.options[layoutSelect.selectedIndex].text;
 
-        if (selectedText.toLowerCase().includes("belakang")) {
+        if (selectedText.toLowerCase().includes("fb")) {
             materiSection.style.display = "block";
         } else {
             materiSection.style.display = "none";
