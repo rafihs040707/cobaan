@@ -123,14 +123,15 @@ $sertifikat = mysqli_fetch_assoc($data_sertifikat);
         <button type="button" id="tambah" class="btn btn-primary mt-2">
             + Tambah Materi
         </button>
+    </div>
 
-        <div class="d-grid gap-2 d-flex justify-content-center mt-3 pb-5">
-            <button type="submit" name="submit" class="btn btn-primary ms-2 col-3">Update</button>
-            <a href="<?= BASE_URL ?>lo/sertifikat/index.php" style="background-color: #6C7301;"
-                class="btn text-decoration-none text-white">
-                Kembali Ke Halaman Sertifikat
-            </a>
-        </div>
+    <div class="d-grid gap-2 d-flex justify-content-center mt-3 pb-5">
+        <button type="submit" name="submit" class="btn btn-primary ms-2 col-3">Update</button>
+        <a href="<?= BASE_URL ?>lo/sertifikat/index.php" style="background-color: #6C7301;"
+            class="btn text-decoration-none text-white">
+            Kembali Ke Halaman Sertifikat
+        </a>
+    </div>
 
 </form>
 
