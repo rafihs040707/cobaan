@@ -15,7 +15,7 @@ require_once BASE_PATH . '/admin/header.php';
 
     <div class="mb-2">
         <label for="nama" class="form-label ms-3">Nama: </label>
-        <input type="text" name="nama" placeholder="Example: Front-End" class="form-control" maxlength="100"
+        <input type="text" name="nama" placeholder="Example: Rafi" class="form-control" maxlength="100"
             required autocomplete="off"><br>
     </div>
 

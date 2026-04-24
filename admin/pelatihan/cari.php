@@ -39,7 +39,7 @@ $nomor = $halaman_awal + 1;
 <div class="container">
     <h2 class="my-2 ms-3">Data Pelatihan</h2>
     <!-- FORM SEARCH -->
-    <form action="<?= BASE_URL ?>admin/template/cari.php" method="GET" class="col-sm-3 mb-3 ms-4 mt-4">
+    <form action="<?= BASE_URL ?>admin/pelatihan/cari.php" method="GET" class="col-sm-3 mb-3 ms-4 mt-4">
         <label for="cari" class="ms-3">Masukkan Kata Kunci:</label>
         <div class="d-inline-flex ms-2">
             <input class="form-control form-control-ms" type="text" id="cari" name="cari" placeholder="Cari"

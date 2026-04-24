@@ -21,7 +21,7 @@ require_once BASE_PATH . '/admin/header.php';
 
     <div class="mb-2">
         <label for="instruktur" class="form-label ms-3">Instruktur: </label>
-        <input type="text" name="instruktur" placeholder="Example: Belajar membuat tampilan menarik" class="form-control"
+        <input type="text" name="instruktur" placeholder="Example: Rafi" class="form-control"
             maxlength="100" required autocomplete="off"><br>
     </div>
 

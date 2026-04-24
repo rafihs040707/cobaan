@@ -62,8 +62,8 @@ if (isset($_POST['submit'])) {
     // ==================
     // INSERT DATABASE
     // ==================
-    $stmt = $conn->prepare("INSERT INTO template (nama_template, penyelenggara, tampak_depan, tampak_belakang, file_layout, locale) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss", $nama_template, $penyelenggara, $tampak_depan, $tampak_belakang, $file_layout, $locale);
+    $stmt = $conn->prepare("INSERT INTO template (nama_template, penyelenggara, tampak_depan, tampak_belakang, file_layout, locale) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssss", $nama_template, $penyelenggara, $tampak_depan, $tampak_belakang, $file_layout, $locale);
 
     // ===========
     // EKSEKUSI
